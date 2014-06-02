@@ -1,4 +1,5 @@
 require 'json'
+require 'definition'
 
 class Dictionary
   def initialize(contents)
@@ -6,23 +7,15 @@ class Dictionary
   end
 
   def definition_for(word)
-    definition = @contents[word]["definition"]
+    definition = Definition.new(@contents[word]["definition"])
 
     {
-        definition: definition_for_display(definition),
+        definition: definition.for_display,
         see_also: related_urls(definition)
     }
   end
 
   private
-
-  def definition_for_display(definition)
-    definition.gsub(/{/, '').gsub(/}/, '')
-  end
-
-  def related_words(definition)
-    definition.scan(/{(.*?)}/).flatten
-  end
 
   def url_for_singular(related_word)
     @contents[related_word[0..-2]]["url"]
@@ -37,8 +30,7 @@ class Dictionary
   end
 
   def related_urls(definition)
-    related_words(definition).map do |related_word|
-
+    definition.related_words.map do |related_word|
       if found_related_word?(related_word)
         url_for(related_word)
       else
