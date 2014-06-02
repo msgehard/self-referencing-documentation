@@ -8,6 +8,6 @@ class Definition
   end
 
   def related_words
-    @text.scan(/{(.*?)}/).flatten
+    @text.scan(/{(.*?)}/).flatten.map { |word| word.gsub(/s/, '') }
   end
 end
