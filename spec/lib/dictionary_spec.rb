@@ -1,30 +1,7 @@
 require 'dictionary'
 
 describe Dictionary do
-  it 'can return the definition of a word with a singular related word' do
-    input = <<-INPUT
-{
-  "word": {
-    "definition": "a {collection}",
-    "url": "//example.com/word"
-  },
-  "collection": {
-    "definition": "a group of things or people",
-    "url": "//example.us/collection"
-  }
-}
-    INPUT
-    dictionary = Dictionary.new(input)
-
-    definition_for = dictionary.definition_for("word")
-
-    expect(definition_for[:definition]).to eq "a collection"
-    expect(definition_for[:see_also]).to match_array [
-                                                         "//example.us/collection"
-                                                     ]
-  end
-
-  it 'can return the definition of a word with a plural related word' do
+  it 'can return the definition of a word' do
     input = <<-INPUT
 {
   "word": {
